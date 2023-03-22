@@ -2,28 +2,30 @@
 #pragma once
 class TcpServer;
 class EventLoop;
-class Socket;
+class Poller;
+class PollPoller;
 class Acceptor;
-class Channel;
 class Connection;
+class Channel;
+class Socket;
+class Buffer;
 class ThreadPool;
 
 // 禁止拷贝和移动构造
-#define DISALLOW_COPY(cname)  \
+#define DISALLOW_COPY(cname)     \
   cname(const cname &) = delete; \
   cname &operator=(const cname &) = delete;
 
-#define DISALLOW_MOVE(cname)   \
+#define DISALLOW_MOVE(cname)      \
   cname(const cname &&) = delete; \
   cname &operator=(const cname &&) = delete;
 
 #define DISALLOW_COPY_AND_MOVE(cname) \
-  DISALLOW_COPY(cname); \
-  DISALLOW_MOVE(cname); \
+  DISALLOW_COPY(cname);               \
+  DISALLOW_MOVE(cname);
 
-  
-  
-  enum RC {
+enum RC
+{
   RC_UNDEFINED,
   RC_SUCCESS,
   RC_SOCKET_ERROR,
