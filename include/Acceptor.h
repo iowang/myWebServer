@@ -2,6 +2,7 @@
 #include <memory>
 #include "common.h"
 #include <functional>
+#include <cassert>
 
 class Acceptor
 {
