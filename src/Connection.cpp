@@ -167,6 +167,37 @@ RC Connection::WriteBlocking()
     return RC_SUCCESS;
 }
 
-void Connection::Business(){
-    
+void Connection::Business()
+{
+    Read();
+    on_recv_(this);
 }
+
+RC Connection::Send(std::string msg)
+{
+    set_send_buf(msg.c_str());
+    Write();
+    return RC_SUCCESS;
+}
+
+void Connection::set_delete_connection(std::function<void(int)> const &fn) { delete_connectioin_ = std::move(fn); }
+
+void Connection::set_on_recv(std::function<void(Connection *)> const &fn)
+{
+    on_recv_ = std::move(fn);
+    std::function<void()> bus = std::bind(&Connection::Business, this);
+    channel_->set_read_callback(bus);
+}
+
+void Connection::Close()
+{
+    delete_connection_(socket_->fd());
+}
+
+Connection::State Connection::state() const { return state_; }
+
+Socket *Connection::socket() const { return socket_.get(); }
+
+void Connection::set_send_buf(const char *str) { send_buf_->set_buf(str); }
+Buffer *Connection::read_buf() { return read_buf_.get(); }
+Buffer *Connection::send_buf() { return send_buf_.get(); }

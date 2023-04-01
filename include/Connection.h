@@ -45,7 +45,7 @@ private:
     std::unique_ptr<Socket> socket_;
     State state_;
     std::unique_ptr<Buffer> read_buf_;
-    std::unique_ptr<Buffer> write_buf_;
+    std::unique_ptr<Buffer> sned_buf_;
 
     std::function<void(int)> delete_connection_;
     std::function<void(Connection *)> on_recv_;
